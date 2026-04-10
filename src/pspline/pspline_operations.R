@@ -39,7 +39,11 @@ mvp_Lambda <- function(L_list, x) {
   if(P==1) {
     n_left <- n_right <- 1
   }
-  Lambda_x <- rowSums(sapply(1:P, function(p) mvp_normalfactor(L_list[[p]], n_left[p], n_right[p], x)))
+  Lambda_x <- rowSums(
+    sapply(
+      1:P, function(p) mvp_normalfactor(L_list[[p]], n_left[p], n_right[p], x)
+      )
+    )
   return(as.vector(Lambda_x))
   
 }
