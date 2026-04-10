@@ -55,7 +55,9 @@ L_terms <- lapply(
 )
 
 # Full matrices for reference
-PhiT_full <- lapply(1:n_terms, function(s) Reduce(rTensor::khatri_rao, PhiT_terms[[s]]))
+PhiT_full <- lapply(
+  1:n_terms, function(s) Reduce(rTensor::khatri_rao, PhiT_terms[[s]])
+)
 PhiT_full <- do.call(rbind, PhiT_full)
 Phi <- t(PhiT_full)
 PhiTPhi_full <- PhiT_full %*% Phi
@@ -70,7 +72,9 @@ Lambda_list <- lapply(1:n_terms, function(s){
 
 lambda_vec <- c(0.1, 0.2)
 
-Lambda_list_weighted <- lapply(1:n_terms, function(s) lambda_vec[[s]] * Lambda_list[[s]])
+Lambda_list_weighted <- lapply(
+  1:n_terms, function(s) lambda_vec[[s]] * Lambda_list[[s]]
+)
 lambda_Lambda_full <- bdiag(Lambda_list_weighted)
 
 A_lambda_full <- PhiTPhi_full + lambda_Lambda_full
