@@ -12,7 +12,7 @@ source("src/pspline_additive/additive_pspline_operations.R")
 # Generate test data
 # ------------------------------------------------------------------------------
 
-# additive P-Spline setup
+# Additive P-Spline setup
 n_terms <- 2
 
 P  <- list(3, 2)                    # Dimension of spline per term

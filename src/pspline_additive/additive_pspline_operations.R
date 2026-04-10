@@ -71,6 +71,8 @@ mvp_lambda_Lambda_terms <- function(L_terms, lambda_vec, alpha_terms) {
 }
 
 # -----------------------------------------------
+# Matrix-free multiplication: (Φᵀ Φ + Λ(λ)) %*% x
+# with Φ = sum_s Φ_s and Λ(λ) = blockdiag(λ_s Λ_s)
 mvp_A_lambda_terms <- function(PhiT_terms, L_terms, lambda_vec, alpha_terms) {
   n_terms <- length(L_terms)
   spline <- mvp_PhiTPhi_terms(PhiT_terms, alpha_terms)
