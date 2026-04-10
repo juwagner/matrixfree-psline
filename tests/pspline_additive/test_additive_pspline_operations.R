@@ -39,12 +39,15 @@ PhiT_terms <- lapply(
   function(s) 
     lapply(1:P[[s]], function(p)
       build_univarate_bspline_basis_T(X_terms[[s]][,p], m[[s]][p], q[[s]][p])
-    )
   )
+)
 
-L_terms <- lapply(1:n_terms, function(s) lapply(1:P[[s]], function(p){
-  build_penalty_difference(J_vec[[s]][p], l[[s]][p])
-}))
+L_terms <- lapply(
+  1:n_terms, 
+  function(s) lapply(1:P[[s]], function(p)
+    build_penalty_difference(J_vec[[s]][p], l[[s]][p])
+  )
+)
 
 # Full matrices for reference
 PhiT_full <- lapply(
