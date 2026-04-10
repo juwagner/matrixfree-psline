@@ -1,26 +1,26 @@
-# -----------------------------------------------------------------
-# P-spline models for the LUCAS dataset
-# -----------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Additive P-spline models for the LUCAS dataset
+# ------------------------------------------------------------------------------
 
 rm(list=ls())
 
 library(Rcpp)
 library(tictoc)
 
-sourceCpp("src/matrix_free_operations.cpp")
-source("R/pspline/pspline_matrices.R")
-source("R/pspline_additive/additive_pspline_operations.R")
-source("R/pspline_additive/additive_pcg_solver.R")
-source("R/pspline_additive/additive_parameter_estimation.R")
+sourceCpp("src/base/matrix_free_operations.cpp")
+source("src/pspline/pspline_matrices.R")
+source("src/pspline_additive/additive_pspline_operations.R")
+source("src/pspline_additive/additive_pcg_solver.R")
+source("src/pspline_additive/additive_parameter_estimation.R")
 
-# -----------------------------------------------
+# ------------------------------------------------------------------------------
 # load data
 source("load_lucas_data.R")
 
 X_terms <- list(X, U)
 
-# -----------------------------------------------
-# spline setup
+# ------------------------------------------------------------------------------
+# Additive P-spline setup
 
 n_terms <- length(X_terms)
 P <- sapply(1:n_terms, function(s) dim(X_terms[[s]])[2])
@@ -38,32 +38,34 @@ L_terms <- lapply(1:n_terms, function(s) lapply(1:P[[s]], function(p){
   build_penalty_difference(J[[s]][p], l[[s]][p])
 }))
 
-b_terms = mvp_PhiT_terms(PhiT_terms = PhiT_terms, y = y)
+b_terms = mvp_PhiT_terms(PhiT_terms = PhiT_terms, x = y)
 
-# -----------------------------------------------
-# solve for fixed lambda
+# ------------------------------------------------------------------------------
+# Solve for α using a fixed λ (single PCG run)
 
 lambda_vec <- c(0.01, 0.45)
 
 tic("single PCG run")
+
 alpha_terms <- solve_pcg_terms(
   PhiT_terms = PhiT_terms,
   L_terms = L_terms,
   lambda_vec = lambda_vec,
   b_terms = b_terms,
   verbose = TRUE,
-)  
+)
+
 toc()
 
 y_hat <- mvp_Phi_terms(PhiT_terms = PhiT_terms, alpha_terms = alpha_terms)
 
-# -----------------------------------------------
-# solve with estimating lambda
+# ------------------------------------------------------------------------------
+# Estimate λ_vec and α_terms simultaneously
 
-#V_rad_terms <- rademacher_matrix_terms(K_terms=K, M=3, seed=42)
-V_rad_terms <- rademacher_terms(K_terms=K, M=3, seed=42)
+V_rad_terms <- rademacher_matrix_terms(K_terms=K, M=3, seed=42)
 
 tic("total time for lambda estimation")
+
 estimation <- estimate_lambda_terms(
   PhiT_terms = PhiT_terms,
   L_terms = L_terms,
@@ -74,6 +76,7 @@ estimation <- estimate_lambda_terms(
   V_rad_terms = V_rad_terms,
   verbose = TRUE
 )
+
 toc()
 
 alpha_terms <- estimation$alpha_terms
@@ -81,6 +84,26 @@ lambda_vec <- estimation$lambda_vec
 
 y_hat <- mvp_Phi_terms(PhiT_terms = PhiT_terms, alpha_terms = alpha_terms)
 
-# -----------------------------------------------
-# validation
+# ------------------------------------------------------------------------------
+# Validation metrics
 
+res <- y-y_hat
+RSS <- sum(res^2)
+V_rad_terms <- rademacher_matrix_terms(K_terms=K, M=3, seed=42)
+df <- estimate_df_terms(PhiT_terms, L_terms, lambda_vec, V_rad_terms)
+AIC <- 2*n*log(RSS) + 2*df
+
+cat(
+  "P-Spline Model Validation | RSS:", RSS, 
+  "DF:", df, 
+  "AIC:", AIC, 
+  "Min fitted:", min(y_hat), 
+  "\n"
+)
+
+# ------------------------------------------------------------------------------
+# Diagnostic plots
+
+qqnorm(res, main="y = s(x)+s(u)")
+qqline(res)
+plot(y_hat, res, xlab="Fitted Values", ylab="Residuals", main="y = s(x)+s(u)")
