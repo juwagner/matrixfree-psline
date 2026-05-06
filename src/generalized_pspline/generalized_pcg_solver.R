@@ -12,7 +12,7 @@ source("src/generalized_pspline/generalized_pspline_operations.R")
 
 # ------------------------------------------------------------------------------
 # Solve (Φᵀ W Φ + λΛ) α = b using diagonal-preconditioned CG
-solve_pcg = function(
+solve_generalized_pcg = function(
     PhiT_list, 
     L_list,
     W,
