@@ -15,7 +15,7 @@ source("src/pspline_additive/additive_parameter_estimation.R")
 
 # ------------------------------------------------------------------------------
 # load data
-source("load_lucas_data.R")
+source("src/utils/load_lucas_data.R")
 
 X_terms <- list(X, U)
 

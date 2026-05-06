@@ -9,7 +9,7 @@ library(lmtest)
 
 # ------------------------------------------------------------------------------
 # load data
-source("load_lucas_data.R")
+source("src/utils/load_lucas_data.R")
 
 # ------------------------------------------------------------------------------
 # non-linearity test

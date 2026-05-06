@@ -15,7 +15,7 @@ source("src/pspline/parameter_estimation.R")
 
 # ------------------------------------------------------------------------------
 # load data
-source("load_lucas_data.R")
+source("src/utils/load_lucas_data.R")
 
 X_input <- X           # U
 main <- "y = s(x)"     # s(u)
