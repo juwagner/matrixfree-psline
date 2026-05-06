@@ -21,6 +21,6 @@ mvp_PhiT_W_Phi <- function(PhiT_list, W, x) {
 
 # ------------------------------------------------------------------------------
 # Matrix-free multiplication: (Φᵀ W Φ + λ Λ) %*% x
-mvp_A_w_lambda <- function(PhiT_list, L_list, lambda, x) {
-  return(mvp_PhiT_W_Phi(PhiT_list, x) + lambda * mvp_Lambda(L_list, x))
+mvp_A_w_lambda <- function(PhiT_list, L_list, W, lambda, x) {
+  return(mvp_PhiT_W_Phi(PhiT_list, W, x) + lambda * mvp_Lambda(L_list, x))
 }
