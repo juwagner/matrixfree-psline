@@ -27,3 +27,4 @@ The main contributions reproduced here are:
 - Improve performance of C++ methods
 - Add correct diagonal precontionier for generalized models
 - Make PCG methods numerically stable
+- Add stopping criterion for fixpoint iteration
