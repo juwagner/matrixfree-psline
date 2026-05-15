@@ -32,10 +32,9 @@ fixpoint_iteration_alpha = function(
     W1 <- exp(Phi_alpha)
     W2 <- exp(2*Phi_alpha)
     
-    a <- lambda * mvp_Lambda(L_list, alpha)
-    z <- mvp_PhiT(PhiT_list , W1*(y-W1)) - a
+    score <- mvp_PhiT(PhiT_list , W1*(y-W1)) - lambda * mvp_Lambda(L_list, alpha)
     v <- solve_generalized_pcg(
-      PhiT_list, L_list, W2, lambda, z, alpha, verbose=pcg_verbose, tol=pcg_tol
+      PhiT_list, L_list, W2, lambda, score, alpha, verbose=pcg_verbose, tol=pcg_tol
     )
     
     alpha <- alpha + v
