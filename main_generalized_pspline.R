@@ -10,7 +10,7 @@ library(tictoc)
 sourceCpp("src/base/matrix_free_operations.cpp")
 source("src/pspline/pspline_matrices.R")
 source("src/generalized_pspline/generalized_pspline_operations.R")
-source("src/generalized_pspline/fixpoint_iteration.R")
+source("src/generalized_pspline/generalized_parameter_estimation.R")
 
 # ------------------------------------------------------------------------------
 # load data
@@ -42,7 +42,7 @@ b <- mvp_PhiT(PhiT_list = PhiT_list, x = y)
 # Solve for α using a fixed λ (fixpoint iteration)
 
 lambda <- 0.1
-n_iter <- 3
+n_iter <- 5
 
 tic("Fixpoint iteration for generalized p-spline")
 
@@ -59,6 +59,7 @@ alpha <- fixpoint_iteration_alpha(
 toc()
 
 y_hat <- mvp_Phi(PhiT_list, alpha)
+
 
 # ------------------------------------------------------------------------------
 # Solve for α and λ
