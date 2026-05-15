@@ -42,25 +42,29 @@ b <- mvp_PhiT(PhiT_list = PhiT_list, x = y)
 # Solve for α using a fixed λ (fixpoint iteration)
 
 lambda <- 0.1
-n_iter <- 5
+n_iter <- 3
 
 tic("Fixpoint iteration for generalized p-spline")
 
-alpha <- fixpoint_iteration_alpha(
+alpha <- fixpoint_alpha(
   n_iter=n_iter,
   PhiT_list=PhiT_list, 
   L_list=L_list,
   lambda=lambda, 
   b=b,
   pcg_tol=10^(-2),
-  pcg_verbose=TRUE
+  pcg_verbose=FALSE
 )
 
 toc()
 
-y_hat <- mvp_Phi(PhiT_list, alpha)
+y_hat <- exp(mvp_Phi(PhiT_list, alpha))
+
+sum((y-y_hat)^2)
 
 
 # ------------------------------------------------------------------------------
 # Solve for α and λ
+
+
 
