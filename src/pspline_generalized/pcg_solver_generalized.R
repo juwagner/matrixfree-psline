@@ -2,7 +2,7 @@
 # Diagonal-preconditioned Conjugate Gradient (PCG) solver for generalized P-splines
 # ------------------------------------------------------------------------------
 
-source("src/generalized_pspline/pspline_operations_generalized.R")
+source("src/pspline_generalized/pspline_operations_generalized.R")
 
 # ------------------------------------------------------------------------------
 # Compute diag(Λ) where Λ = sum_p (I ⊗ L_p ⊗ I)

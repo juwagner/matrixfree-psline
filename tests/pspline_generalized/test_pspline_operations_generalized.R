@@ -6,7 +6,7 @@ library(microbenchmark)
 library(rTensor)
 
 source("src/pspline/pspline_matrices.R")
-source("src/generalized_pspline/generalized_pspline_operations.R")
+source("src/pspline_generalized/pspline_operations_generalized.R")
 
 # ------------------------------------------------------------------------------
 # Generate test data

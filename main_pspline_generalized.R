@@ -9,9 +9,8 @@ library(tictoc)
 
 sourceCpp("src/base/matrix_free_operations.cpp")
 source("src/pspline/pspline_matrices.R")
-source("src/pspline/parameter_estimation.R")
-source("src/generalized_pspline/generalized_pspline_operations.R")
-source("src/generalized_pspline/generalized_parameter_estimation.R")
+source("src/pspline_generalized/pspline_operations_generalized.R")
+source("src/pspline_generalized/parameter_estimation_generalized.R")
 
 # ------------------------------------------------------------------------------
 # load data
@@ -38,14 +37,14 @@ PhiT_list <- lapply(
 L_list <- lapply(1:P, function(p) build_penalty_difference(J=J_vec[p], l=l[p]))
 
 # ------------------------------------------------------------------------------
-# Solve for α using a fixed λ (fixpoint iteration)
+# Estimate α using a fixed λ
 
 lambda <- 0.1
 n_iter <- 3
 
-tic("Fixpoint iteration for generalized p-spline")
+tic("Iteration to estimate alpha for generalized p-spline")
 
-alpha <- fixpoint_w_alpha(
+alpha <- estimate_alpha_generalized(
   n_iter=n_iter,
   PhiT_list=PhiT_list, 
   L_list=L_list,
@@ -59,37 +58,24 @@ toc()
 # ------------------------------------------------------------------------------
 # Solve for α and λ
 
-M <- 3
-V_rad <- rademacher_matrix(K, M, seed=42)
-n_iter <- 2
-
-lambda <- 0.1
-alpha <- NULL
+V_rad <- rademacher_matrix(K, M=3, seed=42)
+lambda_init <- 0.1
 
 tic("Fixpoint iteration for generalized p-spline (α and λ)")
 
-for (i in 1:2) {
-  cat("Iteration: ", i, "\n")
-  alpha <- fixpoint_w_alpha(
-    n_iter=n_iter,
-    PhiT_list=PhiT_list, 
+result <- fit_pspline_generalized(
+    n_iter=2,
+    n_iter_alpha=2,
+    n_iter_lambda=2,
+    PhiT_list=PhiT_list,
     L_list=L_list,
-    lambda=lambda, 
-    #alpha_init=alpha,
+    lambda=lambda_init,
+    V_rad,
     pcg_tol=10^(-2)
-  )
-  cat("Solved for alpha \n")
-  lambda <- estimate_w_lambda(
-    n_iter=n_iter,
-    PhiT_list=PhiT_list, 
-    L_list=L_list,
-    alpha=alpha,
-    lambda=lambda,
-    V_rad=V_rad,
-    pcg_tol=10^(-2)
-  )
-  cat("Current lambda: ", lambda, "\n")
-}
+)
+
+alpha <- result$alpha
+lambda <- result$lambda
 
 toc()
 
