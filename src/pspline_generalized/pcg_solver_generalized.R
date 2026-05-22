@@ -1,16 +1,50 @@
 # ------------------------------------------------------------------------------
-# Diagonal-preconditioned Conjugate Gradient (PCG) solver for P-splines
+# Diagonal-preconditioned Conjugate Gradient (PCG) solver for generalized P-splines
 # ------------------------------------------------------------------------------
 
-source("src/pspline/pcg_solver.R")
-source("src/generalized_pspline/generalized_pspline_operations.R")
+source("src/generalized_pspline/pspline_operations_generalized.R")
 
 # ------------------------------------------------------------------------------
-# ToDo: compute diag(Φᵀ W Φ) as preconditioner (e.g. using Hutchinson)
+# Compute diag(Λ) where Λ = sum_p (I ⊗ L_p ⊗ I)
+# L_list = List of penalty matrices L_p (each J_p × J_p)
+get_diag_Lambda <- function(L_list) {
+  P <- length(L_list)
+  J_vec <- vapply(L_list, function(L_p) ncol(L_p), integer(1))
+  K <- prod(J_vec)
+  
+  if (P == 1L) {
+    d <- as.vector(diag(L_list[[1L]]))
+    return(d)
+  }
+  
+  cp_fwd  <- cumprod(J_vec)
+  n_left  <- c(1L, cp_fwd[-P])
+  
+  cp_bwd  <- cumprod(rev(J_vec))
+  n_right <- c(rev(cp_bwd)[-1L], 1L)
+  
+  diag_pen <- numeric(K)
+  for (p in seq_len(P)) {
+    dp <- diag(L_list[[p]])
+    block <- rep(rep(dp, each = n_right[p]), times = n_left[p])
+    diag_pen <- diag_pen + block
+  }
+  return(as.vector(diag_pen))
+}
+
+# ------------------------------------------------------------------------------
+# Compute diag(ΦᵀΦ) matrix-free
+# PhiT_list List of transposed marginal B-spline bases Φ_pᵀ.
+get_diag_PhiTPhi <- function(PhiT_list) {
+  diag_gram_khatrirao(A_list = PhiT_list)
+}
+
+# ------------------------------------------------------------------------------
+# ToDo: compute diag(Φᵀ W Φ) as preconditioner
 
 # ------------------------------------------------------------------------------
 # Solve (Φᵀ W Φ + λΛ) α = b using diagonal-preconditioned CG
-solve_generalized_pcg = function(
+solve_pcg_generalized = function(
     PhiT_list, 
     L_list,
     W,

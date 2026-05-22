@@ -2,12 +2,12 @@
 # Estimation of α and λ for generalized P-splines
 # ------------------------------------------------------------------------------
 
-source("src/generalized_pspline/generalized_pspline_operations.R")
-source("src/generalized_pspline/generalized_pcg_solver.R")
+source("src/pspline_generalized/pspline_operations_generalized.R")
+source("src/pspline_generalized/pcg_solver_generalized.R")
 
 # ------------------------------------------------------------------------------
-# Fixpoint iteration to estimate α with fixed λ in generalized p-spline model
-fixpoint_w_alpha = function(
+# Iteration to estimate α (with fixed λ) in generalized p-spline model
+estimate_alpha_generalized = function(
     n_iter,
     PhiT_list, 
     L_list,
@@ -32,7 +32,7 @@ fixpoint_w_alpha = function(
     W2 <- as.vector(exp(2*Phi_alpha))
     
     rhs <- mvp_PhiT(PhiT_list , W1*(y-W1)) - lambda * mvp_Lambda(L_list, alpha)
-    v <- solve_generalized_pcg(
+    v <- solve_pcg_generalized(
       PhiT_list, L_list, W2, lambda, rhs, alpha, verbose=pcg_verbose, tol=pcg_tol
     )
     
@@ -48,7 +48,7 @@ fixpoint_w_alpha = function(
 
 # ------------------------------------------------------------------------------
 # Estimate trace of (ΦᵀWΦ + λΛ)^{-1} λΛ using Hutchinson.
-estimate_w_trace = function(
+estimate_trace_generalized = function(
     PhiT_list, 
     L_list,
     W,
@@ -82,8 +82,8 @@ estimate_w_trace = function(
 }
 
 # ------------------------------------------------------------------------------
-# Fixpoint iteration to estimate λ for fixed α in generalized p-spline model
-estimate_w_lambda = function(
+# Iteration to estimate λ (for fixed α) in generalized p-spline model
+estimate_lambda_generalized = function(
     n_iter,
     PhiT_list, 
     L_list,
@@ -108,4 +108,10 @@ estimate_w_lambda = function(
   
   return(lambda)
 }
+
+
+# ------------------------------------------------------------------------------
+# Iteration to estimate α and λ in parallel in generalized p-spline model
+fit_pspline_generalized = function(){
   
+}
