@@ -6,13 +6,12 @@ source("src/generalized_pspline/generalized_pspline_operations.R")
 source("src/generalized_pspline/generalized_pcg_solver.R")
 
 # ------------------------------------------------------------------------------
-# Fixpoint iteration to solve for α in generalized p-spline model
-fixpoint_alpha = function(
+# Fixpoint iteration to estimate α with fixed λ in generalized p-spline model
+fixpoint_w_alpha = function(
     n_iter,
     PhiT_list, 
     L_list,
     lambda, 
-    b,
     alpha_init=NULL,
     pcg_tol=10^(-4),
     pcg_verbose=FALSE
@@ -46,3 +45,67 @@ fixpoint_alpha = function(
   return(as.vector(alpha))
   
 }
+
+# ------------------------------------------------------------------------------
+# Estimate trace of (ΦᵀWΦ + λΛ)^{-1} λΛ using Hutchinson.
+estimate_w_trace = function(
+    PhiT_list, 
+    L_list,
+    W,
+    lambda,
+    V_rad,
+    pcg_tol = 10^(-4), 
+    pcg_verbose=FALSE
+){
+  stopifnot(is.matrix(V_rad))
+  K <- nrow(V_rad)
+  M <- ncol(V_rad)
+  
+  trace_terms <- numeric(M)
+  for (m in seq_len(M)) {
+    v <- V_rad[, m]
+    v_tilde <- lambda * as.vector(mvp_Lambda(L_list=L_list, x=v))
+    v_bar <- solve_generalized_pcg(
+      PhiT_list=PhiT_list, 
+      L_list=L_list,
+      W=W,
+      lambda=lambda,
+      b=v_tilde, 
+      tol = pcg_tol,
+      verbose = pcg_verbose
+    )
+    trace_terms[m] <- drop(crossprod(v, v_bar))
+  }
+
+  return(as.numeric(mean(trace_terms)))
+  
+}
+
+# ------------------------------------------------------------------------------
+# Fixpoint iteration to estimate λ for fixed α in generalized p-spline model
+estimate_w_lambda = function(
+    n_iter,
+    PhiT_list, 
+    L_list,
+    alpha,
+    lambda=0.1,
+    V_rad,
+    pcg_tol = 10^(-4), 
+    pcg_verbose=FALSE
+  ){
+  
+  K <- length(alpha)
+  Phi_alpha <- mvp_Phi(PhiT_list, alpha)
+  W1 <- as.vector(exp(Phi_alpha))
+  W2 <- as.vector(exp(2*Phi_alpha))
+  
+  sigma_eps <- mean((y-W1)^2)
+  
+  trace_est <- estimate_w_trace(PhiT_list, L_list, W2, lambda, V_rad)
+  sigma_alpha <- crossprod(alpha, mvp_Lambda(L_list, alpha)) / (K - trace_est)
+  
+  lambda <- as.numeric(sigma_eps / sigma_alpha)
+  
+  return(lambda)
+}
+  

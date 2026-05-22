@@ -47,7 +47,7 @@ estimate_trace <- function(
 
 # ------------------------------------------------------------------------------
 # Estimate λ for P-splines using moment-based iteration
-#Iteratively updates λ according to:
+# Iteratively updates λ according to:
 # λ <- σ²_ε / σ²_α
 # where
 # σ²_ε = mean((y - Φα)²),

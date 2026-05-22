@@ -61,12 +61,11 @@ cat("======= Correctness Test =======\n")
 # Single iteration
 n_iter <- 3
 
-alpha_fixpoint <- fixpoint_alpha(
+alpha_fixpoint <- fixpoint_w_alpha(
   n_iter,
   PhiT_list, 
   L_list,
-  lambda, 
-  b,
+  lambda,
   alpha_init=alpha,
   pcg_tol=10^(-6),
   pcg_verbose=FALSE
