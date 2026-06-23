@@ -9,9 +9,9 @@ library(tictoc)
 
 sourceCpp("src/base/matrix_free_operations.cpp")
 source("src/pspline/pspline_matrices.R")
-source("src/pspline_additive/additive_pspline_operations.R")
-source("src/pspline_additive/additive_pcg_solver.R")
-source("src/pspline_additive/additive_parameter_estimation.R")
+source("src/pspline_additive/pspline_operations_additive.R")
+source("src/pspline_additive/pcg_solver_additive.R")
+source("src/pspline_additive/parameter_estimation_additive.R")
 
 # ------------------------------------------------------------------------------
 # load data

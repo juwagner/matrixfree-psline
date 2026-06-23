@@ -4,8 +4,8 @@
 
 source("src/pspline/pcg_solver.R")
 source("src/pspline/parameter_estimation.R")
-source("src/pspline_additive/additive_pspline_operations.R")
-source("src/pspline_additive/additive_pcg_solver.R")
+source("src/pspline_additive/pspline_operations_additive.R")
+source("src/pspline_additive/pcg_solver_additive.R")
 
 # ------------------------------------------------------------------------------
 # Generate Rademacher random matrix per term
