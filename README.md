@@ -6,6 +6,8 @@ This repository contains the code to the paper:
 Julian Wagner, Göran Kauermann, Ralf Münnich  
 arXiv: https://arxiv.org/abs/2101.06034
 
+Note that it is researches based code in order to comprehend the methods provided within the paper.
+It is no production ready code and should be used with caution.
 
 ## Overview
 
@@ -17,3 +19,12 @@ The main contributions reproduced here are:
 - Mixed-model formulation enabling computationally efficient smoothing parameter estimation
 - Extensions towards generalized regression models
 - Example applications, including high-dimensional spatial and satellite-based data
+
+
+## Open work
+
+- Make C++ methods independent of P
+- Improve performance of C++ methods
+- Add correct diagonal precondionier for generalized response
+- Make PCG methods numerically stable
+- Add stopping criterion for fixpoint iteration
