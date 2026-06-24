@@ -2,7 +2,7 @@
 # Prepare LUCAS dataset
 # ------------------------------------------------------------------------------
 
-load("data/LUCAS_raw.Rdata")
+load("data/LUCAS.SOIL_corr.Rdata")
 
 # ------------------------------------------------------------------------------
 # Map spectrals to spectral bands
