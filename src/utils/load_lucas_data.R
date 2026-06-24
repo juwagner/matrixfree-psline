@@ -7,11 +7,17 @@ library(BBmisc)
 
 # ------------------------------------------------------------------------------
 # raw data
-load("data/lucas_data.Rdata")
 
-X <- as.matrix(LUCAS.SOIL$spc[2:4])                   # selected spectral bands
-U <- cbind(LUCAS.SOIL$GPS_LAT, LUCAS.SOIL$GPS_LONG)   # geo coordinates
-y <- LUCAS.SOIL$OC                                    # organic carbonate
+file_path <- "data/LUCAS_agg.Rdata"
+if (file.exists(file_path)) {
+  load("data/LUCAS_agg.Rdata")
+} else {
+  source("src/utils/prepare_lucas_data.R")
+}
+
+X <- as.matrix(LUCAS_agg[c("B2", "B3", "B4")])  # selected spectral bands
+U <- cbind(LUCAS_agg$lat, LUCAS_agg$long)       # geo coordinates
+y <- LUCAS_agg$OC                               # organic carbonate
 n <- length(y)
 
 # ------------------------------------------------------------------------------
@@ -23,4 +29,4 @@ y <- normalize(y[-indicator], method="range")
 
 # ------------------------------------------------------------------------------
 # cleanup
-rm(LUCAS.SOIL, indicator)
+rm(LUCAS_agg, indicator)
