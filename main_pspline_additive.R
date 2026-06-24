@@ -101,9 +101,3 @@ cat(
   "\n"
 )
 
-# ------------------------------------------------------------------------------
-# Diagnostic plots
-
-qqnorm(res, main="y = s(x)+s(u)")
-qqline(res)
-plot(y_hat, res, xlab="Fitted Values", ylab="Residuals", main="y = s(x)+s(u)")

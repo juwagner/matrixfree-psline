@@ -17,8 +17,7 @@ source("src/pspline/parameter_estimation.R")
 # load data
 source("src/utils/load_lucas_data.R")
 
-X_input <- X           # U
-main <- "y = s(x)"     # s(u)
+X_input <- X        # U
 
 # ------------------------------------------------------------------------------
 # P-spline setup
@@ -42,7 +41,7 @@ b <- mvp_PhiT(PhiT_list = PhiT_list, x = y)
 # ------------------------------------------------------------------------------
 # Solve for α using a fixed λ (single PCG run)
 
-lambda <- 0.01184
+lambda <- 0.012
 
 tic("single PCG run")
 
@@ -99,11 +98,3 @@ cat(
   "Min fitted:", min(y_hat), 
   "\n"
 )
- 
-# ------------------------------------------------------------------------------
-# Diagnostic plots
-
-qqnorm(res, main=main)
-qqline(res)
-plot(y_hat, res, xlab="Fitted Values", ylab="Residuals", main=main)
-
