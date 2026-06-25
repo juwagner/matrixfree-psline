@@ -6,7 +6,7 @@ library(rTensor)
 library(Matrix)
 
 source("src/pspline/pspline_matrices.R")
-source("src/pspline_additive/additive_parameter_estimation.R")
+source("src/pspline_additive/parameter_estimation_additive.R")
 
 # ------------------------------------------------------------
 # Random test data

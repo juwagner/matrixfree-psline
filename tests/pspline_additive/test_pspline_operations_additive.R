@@ -6,7 +6,7 @@ library(rTensor)
 library(Matrix)
 
 source("src/pspline/pspline_matrices.R")
-source("src/pspline_additive/additive_pspline_operations.R")
+source("src/pspline_additive/pspline_operations_additive.R")
 
 # ------------------------------------------------------------------------------
 # Generate test data

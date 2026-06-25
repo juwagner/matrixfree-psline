@@ -17,7 +17,6 @@ source("src/pspline_generalized/parameter_estimation_generalized.R")
 source("src/utils/load_lucas_data.R")
 
 X_input <- X           # U
-main <- "y = s(x)"     # s(u)
 
 # ------------------------------------------------------------------------------
 # P-spline setup
@@ -49,7 +48,7 @@ alpha <- estimate_alpha_generalized(
   PhiT_list=PhiT_list, 
   L_list=L_list,
   lambda=lambda, 
-  pcg_tol=10^(-2),
+  pcg_tol=10^(-4),
   pcg_verbose=FALSE
 )
 
