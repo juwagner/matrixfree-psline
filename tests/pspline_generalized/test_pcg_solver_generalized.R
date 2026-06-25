@@ -35,7 +35,6 @@ L_list <- lapply(1:P, function(p){
 
 alpha <- rnorm(prod(J_vec))
 W2 <- exp(2*mvp_Phi(PhiT_list, alpha))
-# W <- as.vector(abs(rnorm(n)))
 
 # Full matrices for reference
 PhiT <- Reduce(rTensor::khatri_rao, PhiT_list)
