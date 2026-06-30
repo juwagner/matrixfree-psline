@@ -51,7 +51,7 @@ solve_pcg_generalized_terms <- function(
     A_W_alpha_terms <- mvp_A_W_lambda_terms(
       PhiT_terms, L_terms, lambda_vec, W, alpha_terms
     )
-    r_terms <- lapply(1:n_terms, function(s) b_terms[[s]] - Aalpha_terms[[s]])
+    r_terms <- lapply(1:n_terms, function(s) b_terms[[s]] - A_W_alpha_terms[[s]])
   }
   z_terms <- lapply(
     1:n_terms, 
