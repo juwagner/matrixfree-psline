@@ -87,11 +87,6 @@ cat("======= Correctness Test =======\n")
 V_rad_terms <- rademacher_matrix_terms(K_terms=K_terms, M=10, seed=42)
 
 # ------------------------------------------------------------------------------
-# trace estimation
-
-# already tested
-
-# ------------------------------------------------------------------------------
 # df estimation
 S_lambda <- solve(A_lambda_full) %*% PhiTPhi_full
 df_ref <- sum(diag(S_lambda))
