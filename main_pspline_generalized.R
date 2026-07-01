@@ -45,9 +45,10 @@ tic("Iteration to estimate alpha for generalized p-spline")
 
 alpha <- estimate_alpha_generalized(
   n_iter=n_iter,
-  PhiT_list=PhiT_list, 
+  y=y,
+  PhiT_list=PhiT_list,
   L_list=L_list,
-  lambda=lambda, 
+  lambda=lambda,
   pcg_tol=10^(-4),
   pcg_verbose=FALSE
 )
@@ -66,10 +67,11 @@ result <- fit_pspline_generalized(
     n_iter=2,
     n_iter_alpha=2,
     n_iter_lambda=2,
+    y=y,
     PhiT_list=PhiT_list,
     L_list=L_list,
     lambda=lambda_init,
-    V_rad,
+    V_rad=V_rad,
     pcg_tol=10^(-2)
 )
 

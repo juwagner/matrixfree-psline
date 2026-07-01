@@ -20,9 +20,10 @@ rademacher_matrix <- function(K, M, seed = NULL) {
 # Iteration to estimate α (with fixed λ) in generalized p-spline model
 estimate_alpha_generalized = function(
     n_iter,
-    PhiT_list, 
+    y,
+    PhiT_list,
     L_list,
-    lambda, 
+    lambda,
     alpha_init=NULL,
     pcg_tol=10^(-4),
     pcg_verbose=FALSE
@@ -127,21 +128,25 @@ fit_pspline_generalized = function(
     n_iter=2,
     n_iter_alpha=2,
     n_iter_lambda=2,
+    y,
     PhiT_list,
     L_list,
     lambda,
     V_rad,
     pcg_tol=10^(-2)
     ){
-  
+
+  alpha <- NULL
+
   for (i in 1:n_iter) {
     cat("Iteration: ", i, "\n")
     alpha <- estimate_alpha_generalized(
       n_iter=n_iter_alpha,
-      PhiT_list=PhiT_list, 
+      y=y,
+      PhiT_list=PhiT_list,
       L_list=L_list,
-      lambda=lambda, 
-      #alpha_init=alpha,
+      lambda=lambda,
+      alpha_init=alpha,
       pcg_tol=pcg_tol
     )
     cat("Solved for alpha \n")
