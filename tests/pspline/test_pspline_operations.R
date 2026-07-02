@@ -12,41 +12,7 @@ source("src/pspline/pspline_operations.R")
 # Generate test data
 # ------------------------------------------------------------------------------
 
-# P-Spline setup
-P  <- 3                         # Dimension of tensor-product spline
-m  <- c(15, 17, 21)             # interior knots per dimension
-q  <- c(3, 2, 3)                # spline degrees
-l  <- c(2, 2, 2)                # penalty difference orders
-J  <- m + q + 1                 # basis sizes per dimension
-n  <- 1000                      # number of data points
-
-# Random input data
-X <- matrix(runif(n * P), nrow = n, ncol = P)
-alpha <- rnorm(prod(J))
-y <- rnorm(n)
-
-# P-Spline bases and penalties
-PhiT_list <- lapply(1:P, function(p) {
-  build_univarate_bspline_basis_T(X[,p], m[p], q[p])
-})
-
-L_list <- lapply(1:P, function(p){
-  build_penalty_difference(J[p], l[p])
-})
-
-# Full matrices for reference
-PhiT <- Reduce(rTensor::khatri_rao, PhiT_list)
-Phi <- t(PhiT)
-PhiTPhi <- PhiT %*% Phi
-
-Lambda <- Reduce(`+`, lapply(1:P, function(p) {
-  left  <- if(p>1) diag(prod(J[1:(p-1)])) else 1
-  right <- if(p<P) diag(prod(J[(p+1):P])) else 1
-  kronecker(left, kronecker(L_list[[p]], right))
-}))
-
-lambda <- 0.1
-A_lambda <- PhiTPhi + lambda*Lambda
+source("tests/pspline/generate_test_data.R")
 
 mvp_ref <- function(A, x) {
   as.vector(A %*% x)
