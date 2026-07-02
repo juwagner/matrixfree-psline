@@ -15,6 +15,7 @@ source("src/pspline_additive/parameter_estimation_additive.R")
 
 # ------------------------------------------------------------------------------
 # load data
+
 source("src/utils/load_lucas_data.R")
 
 X_terms <- list(X, U)
@@ -72,7 +73,7 @@ estimation <- estimate_lambda_terms(
   y = y,
   b_terms = b_terms,
   lambda_vec_init = c(0.1, 0.1),
-  it_max = 10,
+  it_max = 5,
   V_rad_terms = V_rad_terms,
   verbose = TRUE
 )
