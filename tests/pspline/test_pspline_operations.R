@@ -2,6 +2,8 @@
 # Test suite for high-level P-spline matrix-free operators
 # ------------------------------------------------------------------------------
 
+rm(list=ls())
+
 library(microbenchmark)
 library(rTensor)
 
