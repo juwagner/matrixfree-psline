@@ -2,19 +2,9 @@
 # Estimation of the regularization parameter λ for P-splines
 # ------------------------------------------------------------------------------
 
+source("src/utils/rademacher.R")
 source("src/pspline/pspline_operations.R")
 source("src/pspline/pcg_solver.R")
-
-# ------------------------------------------------------------------------------
-# Generate Rademacher random matrix
-rademacher_matrix <- function(K, M, seed = NULL) {
-  if (!is.null(seed)) set.seed(seed)
-  V_rad <- matrix(
-    sample(c(-1L, 1L), size = K * M, replace = TRUE), nrow = K, ncol = M
-  )
-  storage.mode(V_rad) <- "double"
-  return(V_rad)
-}
 
 # ------------------------------------------------------------------------------
 # Estimate df(λ) = trace(S_λ), with S_λ = (A_λ)^{-1} ΦᵀΦ

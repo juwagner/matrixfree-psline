@@ -2,23 +2,11 @@
 # Estimation of the regularization parameters λ_s for additive P-splines
 # ------------------------------------------------------------------------------
 
+source("src/utils/rademacher.R")
 source("src/pspline/pcg_solver.R")
 source("src/pspline/parameter_estimation.R")
 source("src/pspline_additive/pspline_operations_additive.R")
 source("src/pspline_additive/pcg_solver_additive.R")
-
-# ------------------------------------------------------------------------------
-# Generate Rademacher random matrix per term
-rademacher_matrix_terms <- function(K_terms, M, seed = NULL) {
-  if (!is.null(seed)) set.seed(seed)
-  V <- lapply(
-    K_terms, 
-    function(K) matrix(
-      sample(c(-1L, 1L), size = K*M, replace = TRUE), nrow = K, ncol = M
-    )
-  )
-  return(V)
-}
 
 # ------------------------------------------------------------------------------
 # Estimate trace(S_λ_j) = (A_λ_j)^{-1} Φ_jᵀΦ_j per term

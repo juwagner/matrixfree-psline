@@ -2,19 +2,9 @@
 # Estimation of α and λ for generalized P-splines
 # ------------------------------------------------------------------------------
 
+source("src/utils/rademacher.R")
 source("src/pspline_generalized/pspline_operations_generalized.R")
 source("src/pspline_generalized/pcg_solver_generalized.R")
-
-# ------------------------------------------------------------------------------
-# Generate Rademacher random matrix
-rademacher_matrix <- function(K, M, seed = NULL) {
-  if (!is.null(seed)) set.seed(seed)
-  V_rad <- matrix(
-    sample(c(-1L, 1L), size = K * M, replace = TRUE), nrow = K, ncol = M
-  )
-  storage.mode(V_rad) <- "double"
-  return(V_rad)
-}
 
 # ------------------------------------------------------------------------------
 # Iteration to estimate α (with fixed λ) in generalized p-spline model
@@ -96,7 +86,6 @@ estimate_trace_generalized = function(
 # ------------------------------------------------------------------------------
 # Iteration to estimate λ (for fixed α) in generalized p-spline model
 estimate_lambda_generalized = function(
-    n_iter,
     PhiT_list, 
     L_list,
     alpha,
@@ -127,7 +116,6 @@ estimate_lambda_generalized = function(
 fit_pspline_generalized = function(
     n_iter=2,
     n_iter_alpha=2,
-    n_iter_lambda=2,
     y,
     PhiT_list,
     L_list,
@@ -152,7 +140,6 @@ fit_pspline_generalized = function(
     cat("Solved for alpha \n")
     if(i != n_iter){
       lambda <- estimate_lambda_generalized(
-        n_iter=n_iter,
         PhiT_list=PhiT_list, 
         L_list=L_list,
         alpha=alpha,
