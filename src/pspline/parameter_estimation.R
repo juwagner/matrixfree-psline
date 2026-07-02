@@ -59,9 +59,9 @@ estimate_lambda <- function(
   K <- prod(J_vec)
   
   if (is.null(V_rad)) {
-    V_rad <- rademacher_matrix(K, M, seed = 1)
+    V_rad <- rademacher_matrix(K, M)
   }
-  
+  cat("Start iteration for λ \n")
   lambda <- lambda_init
   
   alpha <- solve_pcg(
@@ -85,13 +85,12 @@ estimate_lambda <- function(
       pcg_tol = pcg_tol
     )
     
-    sigma2_alpha <- drop(crossprod(alpha, mvp_Lambda(L_list, alpha))) / df_hat
-    
-    lambda_new <- sigma2_eps / sigma2_alpha
-    
     if (verbose) {
-      cat("Iteration ", i, ": lambda = ", lambda_new, " df = ", df_hat, "\n")
+      cat("Iteration ", i, ": lambda = ", lambda, " df = ", df_hat, "\n")
     }
+    
+    sigma2_alpha <- drop(crossprod(alpha, mvp_Lambda(L_list, alpha))) / df_hat
+    lambda_new <- sigma2_eps / sigma2_alpha
     
     if(abs(lambda - lambda_new) <= 0.001) {
       break

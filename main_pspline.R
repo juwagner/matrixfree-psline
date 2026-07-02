@@ -89,14 +89,14 @@ y_hat <- mvp_Phi(PhiT_list, alpha)
 res <- y-y_hat
 RSS <- sum(res^2)
 V_rad <- rademacher_matrix(K=K, M=3, seed=42)
-df <- estimate_trace(PhiT_list, L_list, lambda, V_rad)
+df <- estimate_trace(PhiT_list, L_list, lambda, V_rad, pcg_tol=1e-3)
 AIC <- 2*n*log(RSS) + 2*df
 
 cat(
   "P-Spline Model Validation | ",
-  "RSS:", RSS, 
-  "DF:", df, 
-  "AIC:", AIC, 
-  "Min fitted:", min(y_hat), 
+  "RSS:", RSS,
+  "DF:", df,
+  "AIC:", AIC,
+  "Min fitted:", min(y_hat),
   "\n"
 )
