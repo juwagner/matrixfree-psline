@@ -8,6 +8,7 @@ library(Rcpp)
 library(tictoc)
 
 sourceCpp("src/base/matrix_free_operations.cpp")
+source("src/utils/rademacher.R")
 source("src/pspline/pspline_matrices.R")
 source("src/pspline/pspline_operations.R")
 source("src/pspline/pcg_solver.R")
@@ -92,7 +93,8 @@ df <- estimate_trace(PhiT_list, L_list, lambda, V_rad)
 AIC <- 2*n*log(RSS) + 2*df
 
 cat(
-  "P-Spline Model Validation | RSS:", RSS, 
+  "P-Spline Model Validation | ",
+  "RSS:", RSS, 
   "DF:", df, 
   "AIC:", AIC, 
   "Min fitted:", min(y_hat), 

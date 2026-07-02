@@ -90,7 +90,7 @@ estimate_lambda <- function(
     lambda_new <- sigma2_eps / sigma2_alpha
     
     if (verbose) {
-      cat("Iter ", i, ": lambda = ", lambda_new, " df = ", df_hat, "\n")
+      cat("Iteration ", i, ": lambda = ", lambda_new, " df = ", df_hat, "\n")
     }
     
     if(abs(lambda - lambda_new) <= 0.001) {
