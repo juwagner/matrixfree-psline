@@ -64,7 +64,7 @@ mvp_lambda_Lambda_terms <- function(L_terms, lambda_vec, alpha_terms) {
   n_terms <- length(L_terms)
   w <- lapply(
     1:n_terms, 
-    function(s) lambda_vec[[s]]*mvp_Lambda(L_terms[[s]], alpha_terms[[s]])
+    function(s) lambda_vec[s]*mvp_Lambda(L_terms[[s]], alpha_terms[[s]])
     )
   return(w)
 }

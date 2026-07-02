@@ -78,6 +78,7 @@ estimate_lambda_terms <- function(
     V_rad_terms <- rademacher_matrix_terms(K_terms, M)
   }
   
+  cat("Start iteration for λ \n")
   if (is.null(lambda_vec_init)) {
     lambda_vec <- rep(0.1, n_terms)
   } else {
@@ -107,6 +108,10 @@ estimate_lambda_terms <- function(
       pcg_tol    = pcg_tol
     )
     
+    if (verbose) {
+      cat("Iter", i, ": lambda =", paste(round(lambda_vec, 6), collapse = " , "), "\n")
+    }
+    
     sigma2_alpha_terms <- vapply(
       seq_len(n_terms),
       function(s) {
@@ -118,10 +123,6 @@ estimate_lambda_terms <- function(
     )
     
     lambda_new <- sigma2_eps / sigma2_alpha_terms
-    
-    if (verbose) {
-      cat("Iter", i, ": lambda =", paste(round(lambda_new, 6), collapse = " , "), "\n")
-    }
     
     if (max(abs(lambda_new - lambda_vec)) < 0.001)
       break
