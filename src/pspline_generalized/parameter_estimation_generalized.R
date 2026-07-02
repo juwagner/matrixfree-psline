@@ -28,7 +28,7 @@ estimate_alpha_generalized = function(
   }
   
   for(i in 1:n_iter){
-    cat("---------- Start fixpoint iteration: ", i, "\n")
+    cat("Iteration for alpha: ", i, "/", n_iter, "\n")
     Phi_alpha <- mvp_Phi(PhiT_list, alpha)
     W1 <- as.vector(exp(Phi_alpha))
     W2 <- as.vector(exp(2*Phi_alpha))
@@ -44,6 +44,7 @@ estimate_alpha_generalized = function(
     alpha <- alpha_new
   }
   
+  cat("Solved for alpha \n")
   return(as.vector(alpha))
   
 }
@@ -78,7 +79,8 @@ estimate_trace_generalized = function(
     )
     trace_terms[m] <- drop(crossprod(v, v_bar))
   }
-
+  
+  cat("Estimated trace \n")
   return(as.numeric(mean(trace_terms)))
   
 }
@@ -107,6 +109,7 @@ estimate_lambda_generalized = function(
   
   lambda <- as.numeric(sigma_eps / sigma_alpha)
   
+  cat("Estimated lambda \n")
   return(lambda)
 }
 
@@ -127,7 +130,7 @@ fit_pspline_generalized = function(
   alpha <- NULL
 
   for (i in 1:n_iter) {
-    cat("Iteration: ", i, "\n")
+    cat("--- Outer iteration: ", i ,"/", n_iter, "\n")
     alpha <- estimate_alpha_generalized(
       n_iter=n_iter_alpha,
       y=y,
@@ -137,7 +140,7 @@ fit_pspline_generalized = function(
       alpha_init=alpha,
       pcg_tol=pcg_tol
     )
-    cat("Solved for alpha \n")
+
     if(i != n_iter){
       lambda <- estimate_lambda_generalized(
         PhiT_list=PhiT_list, 
